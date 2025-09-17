@@ -1,191 +1,185 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NightClub Booking</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NightClub Booking</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      min-height: 100vh;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #f5f5dc;
+    }
+    .container { width: 100%; max-width: 420px; }
+    .glass-card {
+      background: rgba(20, 20, 20, 0.6);
+      backdrop-filter: blur(18px);
+      border-radius: 25px;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      padding: 25px;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    }
+    .header { text-align: center; margin-bottom: 25px; }
+    .logo { font-size: 28px; font-weight: bold; color: #ffd700; }
+    .subtitle { font-size: 15px; color: #c5c5a5; }
 
-        body {
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: #f5f5dc;
-        }
+    .btn {
+      width: 100%; padding: 14px; margin: 8px 0;
+      border: none; border-radius: 12px;
+      font-weight: bold; cursor: pointer;
+    }
+    .btn-primary { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
+    .btn-primary:hover { background: rgba(255, 215, 0, 0.35); }
+    .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #f5f5dc; }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
 
-        .container { width: 100%; max-width: 420px; }
+    .section-title { color: #ffd700; text-align: center; margin-bottom: 15px; }
+    .form-group { margin-bottom: 15px; }
+    .form-label { display: block; font-weight: bold; margin-bottom: 6px; }
+    .form-input {
+      width: 100%; padding: 12px;
+      border: none; border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      color: #f5f5dc;
+    }
+    .hidden { display: none; }
+    .back-btn {
+      margin-top: 15px; padding: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      border-radius: 10px; color: #ffd700;
+    }
 
-        .glass-card {
-            background: rgba(20, 20, 20, 0.6);
-            backdrop-filter: blur(18px);
-            border-radius: 25px;
-            border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 30px;
-            margin: 15px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-            transition: transform 0.3s ease;
-        }
-
-        .glass-card:hover { transform: translateY(-5px); }
-
-        .header { text-align: center; margin-bottom: 30px; }
-
-        .logo {
-            font-size: 28px;
-            font-weight: bold;
-            color: #ffd700;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
-            margin-bottom: 10px;
-        }
-
-        .subtitle { color: #c5c5a5; font-size: 15px; opacity: 0.9; }
-
-        .btn {
-            width: 100%; padding: 16px; margin: 10px 0;
-            border: none; border-radius: 15px;
-            font-size: 16px; font-weight: bold;
-            cursor: pointer; transition: all 0.3s ease;
-            text-align: center; display: block; text-decoration: none;
-        }
-
-        .btn-primary {
-            background: rgba(255, 215, 0, 0.2);
-            color: #ffd700;
-            border: 1px solid rgba(255, 215, 0, 0.4);
-        }
-
-        .btn-primary:hover {
-            background: rgba(255, 215, 0, 0.35);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.1);
-            color: #f5f5dc;
-            border: 1px solid rgba(255, 215, 0, 0.2);
-        }
-
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
-
-        .form-group { margin-bottom: 20px; }
-        .form-label { display: block; color: #f5f5dc; margin-bottom: 8px; font-weight: bold; font-size: 14px; }
-        .form-input {
-            width: 100%; padding: 14px;
-            border: none; border-radius: 12px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #f5f5dc; font-size: 15px;
-            backdrop-filter: blur(8px);
-        }
-        .form-input::placeholder { color: rgba(245, 245, 220, 0.6); }
-
-        .section { margin-bottom: 30px; }
-
-        .section-title {
-            color: #ffd700; margin-bottom: 15px;
-            text-align: center; font-size: 20px;
-            text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
-        }
-
-        .hidden { display: none; }
-
-        .success-message { text-align: center; color: #f5f5dc; font-size: 18px; padding: 20px; }
-
-        .back-btn {
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffd700; border: 1px solid rgba(255, 215, 0, 0.3);
-            padding: 10px 20px; border-radius: 10px;
-            cursor: pointer; margin-top: 20px; font-weight: bold;
-        }
-
-        .promo-code { margin-top: 10px; color: #c5c5a5; text-align: center; }
-
-        /* Слайдер */
-        .menu-slider { text-align: center; }
-        .menu-slider img {
-            width: 100%; border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(255,215,0,0.3);
-        }
-        .slider-controls {
-            margin-top: 15px; display: flex; justify-content: space-between;
-        }
-        .slider-btn {
-            background: rgba(255, 215, 0, 0.2);
-            border: 1px solid rgba(255, 215, 0, 0.4);
-            color: #ffd700; padding: 8px 16px;
-            border-radius: 8px; cursor: pointer;
-            transition: 0.3s;
-        }
-        .slider-btn:hover { background: rgba(255, 215, 0, 0.35); }
-    </style>
+    /* Картинки меню */
+    .menu-images img {
+      width: 100%; border-radius: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="glass-card">
-            <div class="header">
-                <div class="logo"> Cabinet </div>
-                <div class="subtitle">Ваш идеальный вечер начинается здесь</div>
-            </div>
+  <div class="container">
+    <div class="glass-card">
+      <div class="header">
+        <div class="logo">🌟 Cabinet 🌟</div>
+        <div class="subtitle">Ваш идеальный вечер начинается здесь</div>
+      </div>
 
-            <!-- Главное меню -->
-            <div id="main-menu">
-                <div class="section">
-                    <button class="btn btn-primary" onclick="showSection('booking')">🍽️ Забронировать стол</button>
-                    <button class="btn btn-primary" onclick="showSection('tickets')">🎫 Купить билет</button>
-                    <button class="btn btn-primary" onclick="showSection('taxi')">🚕 Заказать такси</button>
-                    <button class="btn btn-primary" onclick="showSection('menu')">📖 Меню</button>
-                    <button class="btn btn-secondary" onclick="showSection('team')">👥 Присоединиться к команде</button>
-                </div>
-            </div>
+      <!-- Главное меню -->
+      <div id="main-menu">
+        <button class="btn btn-primary" onclick="showSection('booking')">🍽️ Забронировать стол</button>
+        <button class="btn btn-primary" onclick="showSection('tickets')">🎫 Купить билет</button>
+        <button class="btn btn-primary" onclick="showSection('taxi')">🚕 Заказать такси</button>
+        <button class="btn btn-primary" onclick="showSection('menu')">📖 Меню</button>
+        <button class="btn btn-secondary" onclick="showSection('team')">👥 Присоединиться к команде</button>
+      </div>
 
-            <!-- 📖 Меню с слайдером -->
-            <div id="menu" class="hidden">
-                <div class="section-title">📖 Меню клуба</div>
-                <div class="menu-slider">
-                    <img id="menu-image" src="menu1.png" alt="Меню клуба">
-                    <div class="slider-controls">
-                        <button class="slider-btn" onclick="prevImage()">⬅</button>
-                        <button class="slider-btn" onclick="nextImage()">➡</button>
-                    </div>
-                </div>
-                <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
-            </div>
-
-            <!-- Остальные секции (booking, tickets, taxi, team, success) остаются прежними -->
-            <!-- ... (сохрани твой прошлый код здесь, он полностью рабочий) ... -->
+      <!-- 📖 Меню (скролл) -->
+      <div id="menu" class="hidden">
+        <div class="section-title">📖 Меню клуба</div>
+        <div class="menu-images">
+          <img src="menu1.png" alt="Меню 1">
+          <img src="menu2.png" alt="Меню 2">
+          <img src="menu3.png" alt="Меню 3">
+          <img src="menu4.png" alt="Меню 4">
+          <img src="menu5.png" alt="Меню 5">
+          <img src="menu6.png" alt="Меню 6">
+          <img src="menu7.png" alt="Меню 7">
+          <img src="menu8.png" alt="Меню 8">
         </div>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 🍽️ Бронирование -->
+      <div id="booking" class="hidden">
+        <div class="section-title">Бронирование стола</div>
+        <div class="form-group">
+          <label class="form-label">Выберите зал</label>
+          <select class="form-input">
+            <option>VIP-зал</option>
+            <option>Главный зал</option>
+            <option>Караоке-зал</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Дата и время</label>
+          <input type="datetime-local" class="form-input">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Количество гостей</label>
+          <input type="number" class="form-input" min="1" max="20" value="2">
+        </div>
+        <button class="btn btn-primary">Забронировать</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 🎫 Билеты -->
+      <div id="tickets" class="hidden">
+        <div class="section-title">Выбор мероприятия</div>
+        <button class="btn btn-secondary">🎆 Пятничная вечеринка - 1000₽</button>
+        <button class="btn btn-secondary">🎵 DJ Night - 1500₽</button>
+        <button class="btn btn-secondary">🎭 Тематическая вечеринка - 2000₽</button>
+        <div class="form-group">
+          <label class="form-label">Количество билетов</label>
+          <input type="number" class="form-input" min="1" max="10" value="1">
+        </div>
+        <button class="btn btn-primary">Купить</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 🚕 Такси -->
+      <div id="taxi" class="hidden">
+        <div class="section-title">Заказ такси</div>
+        <div class="form-group">
+          <label class="form-label">Откуда забрать</label>
+          <input type="text" class="form-input" placeholder="Адрес">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Время подачи</label>
+          <select class="form-input">
+            <option>Сейчас</option>
+            <option>19:00</option>
+            <option>20:00</option>
+          </select>
+        </div>
+        <button class="btn btn-primary">Заказать</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 👥 Команда -->
+      <div id="team" class="hidden">
+        <div class="section-title">Присоединиться к команде</div>
+        <div class="form-group">
+          <label class="form-label">Ваше имя</label>
+          <input type="text" class="form-input" placeholder="Введите имя">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Желаемая должность</label>
+          <select class="form-input">
+            <option>Бармен</option>
+            <option>DJ</option>
+            <option>Официант</option>
+            <option>Охрана</option>
+          </select>
+        </div>
+        <button class="btn btn-primary">Отправить заявку</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
     </div>
+  </div>
 
-    <script>
-        // Секции
-        function showSection(sectionId) {
-            document.querySelectorAll('div[id]').forEach(section => section.classList.add('hidden'));
-            document.getElementById(sectionId).classList.remove('hidden');
-        }
-
-        // Меню-слайдер
-        const menuImages = ["menu1.png","menu2.png","menu3.png","menu4.png","menu5.png","menu6.png","menu7.png","menu8.png"];
-        let currentImage = 0;
-
-        function showImage(index) {
-            if (index < 0) index = menuImages.length - 1;
-            if (index >= menuImages.length) index = 0;
-            currentImage = index;
-            document.getElementById("menu-image").src = menuImages[currentImage];
-        }
-
-        function prevImage() { showImage(currentImage - 1); }
-        function nextImage() { showImage(currentImage + 1); }
-
-        // Инициализация
-        document.addEventListener('DOMContentLoaded', function() {
-            showSection('main-menu');
-        });
-    </script>
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('#main-menu, #menu, #booking, #tickets, #taxi, #team')
+        .forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+  </script>
 </body>
 </html>
