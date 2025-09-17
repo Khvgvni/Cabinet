@@ -13,27 +13,28 @@
 
         body {
             font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 50%, #fbc2eb 100%);
+            background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
             min-height: 100vh;
             padding: 20px;
             display: flex;
             justify-content: center;
             align-items: center;
+            color: #f5f5dc;
         }
 
         .container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
 
         .glass-card {
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(15px);
+            background: rgba(20, 20, 20, 0.6);
+            backdrop-filter: blur(18px);
             border-radius: 25px;
-            border: 1px solid rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 215, 0, 0.3);
             padding: 30px;
             margin: 15px 0;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
             transition: transform 0.3s ease;
         }
 
@@ -49,21 +50,21 @@
         .logo {
             font-size: 28px;
             font-weight: bold;
-            color: #ff69b4;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
             margin-bottom: 10px;
         }
 
         .subtitle {
-            color: #fff;
-            font-size: 16px;
+            color: #c5c5a5;
+            font-size: 15px;
             opacity: 0.9;
         }
 
         .btn {
             width: 100%;
-            padding: 18px;
-            margin: 12px 0;
+            padding: 16px;
+            margin: 10px 0;
             border: none;
             border-radius: 15px;
             font-size: 16px;
@@ -76,25 +77,25 @@
         }
 
         .btn-primary {
-            background: rgba(255, 105, 180, 0.8);
-            color: white;
-            border: 1px solid rgba(255, 255, 255, 0.5);
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.4);
         }
 
         .btn-primary:hover {
-            background: rgba(255, 105, 180, 1);
+            background: rgba(255, 215, 0, 0.35);
             transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(255, 105, 180, 0.3);
+            box-shadow: 0 8px 20px rgba(255, 215, 0, 0.3);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.3);
-            color: #ff69b4;
-            border: 1px solid rgba(255, 105, 180, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: #f5f5dc;
+            border: 1px solid rgba(255, 215, 0, 0.2);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
         }
 
         .form-group {
@@ -103,24 +104,25 @@
 
         .form-label {
             display: block;
-            color: #fff;
+            color: #f5f5dc;
             margin-bottom: 8px;
             font-weight: bold;
+            font-size: 14px;
         }
 
         .form-input {
             width: 100%;
-            padding: 15px;
+            padding: 14px;
             border: none;
             border-radius: 12px;
-            background: rgba(255, 255, 255, 0.2);
-            color: #fff;
-            font-size: 16px;
-            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.1);
+            color: #f5f5dc;
+            font-size: 15px;
+            backdrop-filter: blur(8px);
         }
 
         .form-input::placeholder {
-            color: rgba(255, 255, 255, 0.7);
+            color: rgba(245, 245, 220, 0.6);
         }
 
         .section {
@@ -128,11 +130,11 @@
         }
 
         .section-title {
-            color: #ff69b4;
+            color: #ffd700;
             margin-bottom: 15px;
             text-align: center;
             font-size: 20px;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            text-shadow: 0 0 6px rgba(255, 215, 0, 0.4);
         }
 
         .hidden {
@@ -141,19 +143,26 @@
 
         .success-message {
             text-align: center;
-            color: #fff;
+            color: #f5f5dc;
             font-size: 18px;
             padding: 20px;
         }
 
         .back-btn {
-            background: rgba(255, 255, 255, 0.2);
-            color: #ff69b4;
-            border: 1px solid rgba(255, 105, 180, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffd700;
+            border: 1px solid rgba(255, 215, 0, 0.3);
             padding: 10px 20px;
             border-radius: 10px;
             cursor: pointer;
             margin-top: 20px;
+            font-weight: bold;
+        }
+
+        .promo-code {
+            margin-top: 10px;
+            color: #c5c5a5;
+            text-align: center;
         }
     </style>
 </head>
@@ -171,8 +180,18 @@
                     <button class="btn btn-primary" onclick="showSection('booking')">🍽️ Забронировать стол</button>
                     <button class="btn btn-primary" onclick="showSection('tickets')">🎫 Купить билет</button>
                     <button class="btn btn-primary" onclick="showSection('taxi')">🚕 Заказать такси</button>
+                    <button class="btn btn-primary" onclick="showSection('menu')">📖 Меню</button>
                     <button class="btn btn-secondary" onclick="showSection('team')">👥 Присоединиться к команде</button>
                 </div>
+            </div>
+
+            <!-- Вкладка Меню -->
+            <div id="menu" class="hidden">
+                <div class="section-title">📖 Меню клуба</div>
+                <div style="text-align:center;">
+                    <img src="menu.png" alt="Меню клуба" style="width:100%; border-radius:15px; box-shadow:0 8px 20px rgba(255,215,0,0.3);">
+                </div>
+                <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
             </div>
 
             <!-- Бронирование стола -->
@@ -267,7 +286,7 @@
                 </div>
                 <div class="form-group">
                     <label class="form-label">Должность</label>
-                        <select class="form-input" id="team-position">
+                    <select class="form-input" id="team-position">
                         <option value="">Выберите должность</option>
                         <option value="bar">Бармен</option>
                         <option value="dj">DJ</option>
@@ -298,12 +317,9 @@
 
     <script>
         function showSection(sectionId) {
-            // Скрываем все секции
             document.querySelectorAll('div[id]').forEach(section => {
                 section.classList.add('hidden');
             });
-            
-            // Показываем нужную секцию
             document.getElementById(sectionId).classList.remove('hidden');
         }
 
@@ -352,7 +368,6 @@
             showSection('success');
         }
 
-        // Инициализация
         document.addEventListener('DOMContentLoaded', function() {
             showSection('main-menu');
         });
