@@ -6,64 +6,97 @@
   <title>NightClub Booking</title>
   <style>
     body {
-      font-family: 'Arial', sans-serif;
+      font-family: 'Segoe UI', sans-serif;
       background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
       min-height: 100vh;
       padding: 20px;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #f5f5dc;
+      color: #e0e0e0;
     }
-    .container { width: 100%; max-width: 420px; }
+    .container { width: 100%; max-width: 460px; }
     .glass-card {
-      background: rgba(20, 20, 20, 0.6);
-      backdrop-filter: blur(18px);
-      border-radius: 25px;
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      padding: 25px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+      background: rgba(30, 30, 30, 0.55);
+      backdrop-filter: blur(20px);
+      border-radius: 28px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 30px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
       overflow-y: auto;
       max-height: 90vh;
     }
-    .header { text-align: center; margin-bottom: 25px; }
-    .logo { font-size: 28px; font-weight: bold; color: #ffd700; }
-    .subtitle { font-size: 15px; color: #c5c5a5; }
+    .header { text-align: center; margin-bottom: 28px; }
+    .logo { font-size: 32px; font-weight: bold; color: #c0aee0; }
+    .subtitle { font-size: 16px; color: #b0b0b0; }
 
     .btn {
-      width: 100%; padding: 14px; margin: 8px 0;
-      border: none; border-radius: 12px;
-      font-weight: bold; cursor: pointer;
+      width: 100%;
+      padding: 18px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 15px;
+      font-size: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
     }
-    .btn-primary { background: rgba(255, 215, 0, 0.2); color: #ffd700; }
-    .btn-primary:hover { background: rgba(255, 215, 0, 0.35); }
-    .btn-secondary { background: rgba(255, 255, 255, 0.1); color: #f5f5dc; }
-    .btn-secondary:hover { background: rgba(255, 255, 255, 0.2); }
+    .btn-primary {
+      background: rgba(192, 174, 224, 0.2);
+      color: #d4c8f0;
+      border: 1px solid rgba(192, 174, 224, 0.35);
+    }
+    .btn-primary:hover {
+      background: rgba(192, 174, 224, 0.35);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(192, 174, 224, 0.25);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.07);
+      color: #dcdcdc;
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
 
-    .section-title { color: #ffd700; text-align: center; margin-bottom: 15px; }
-    .form-group { margin-bottom: 15px; }
-    .form-label { display: block; font-weight: bold; margin-bottom: 6px; }
-    .form-input {
-      width: 100%; padding: 12px;
-      border: none; border-radius: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      color: #f5f5dc;
+    .section-title {
+      color: #c0aee0;
+      text-align: center;
+      margin-bottom: 18px;
+      font-size: 22px;
+      font-weight: bold;
     }
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; font-weight: bold; margin-bottom: 8px; }
+    .form-input {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #f0f0f0;
+      font-size: 17px;
+    }
+    .form-input::placeholder { color: rgba(220, 220, 220, 0.6); }
+
     .hidden { display: none; }
     .back-btn {
-      margin-top: 15px; padding: 10px;
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      border-radius: 10px; color: #ffd700;
+      margin-top: 20px;
+      padding: 12px;
+      font-size: 16px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 12px;
+      color: #c0aee0;
       cursor: pointer;
+      width: 100%;
     }
 
     /* Картинки меню списком */
     .menu-images img {
       width: 100%;
-      border-radius: 15px;
-      margin-bottom: 15px;
-      box-shadow: 0 8px 20px rgba(255,215,0,0.3);
+      border-radius: 18px;
+      margin-bottom: 18px;
+      box-shadow: 0 8px 25px rgba(192, 174, 224, 0.25);
     }
   </style>
 </head>
@@ -71,8 +104,8 @@
   <div class="container">
     <div class="glass-card">
       <div class="header">
-        <div class="logo"> Cabinet </div>
-        <div class="subtitle">Ваш идеальный вечер начинается здесь</div>
+        <div class="logo">🌌 Cabinet</div>
+        <div class="subtitle">Идеальный вечер начинается здесь</div>
       </div>
 
       <!-- Главное меню -->
@@ -84,7 +117,7 @@
         <button class="btn btn-secondary" onclick="showSection('team')">👥 Присоединиться к команде</button>
       </div>
 
-      <!-- 📖 Меню (списком) -->
+      <!-- 📖 Меню -->
       <div id="menu" class="hidden">
         <div class="section-title">📖 Меню клуба</div>
         <div class="menu-images">
