@@ -3,100 +3,114 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NightClub Booking</title>
+  <title>Cabinet Club</title>
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #0d0d0d 0%, #1a1a1a 100%);
+      background: linear-gradient(-45deg, #1a1a1a, #2a003f, #0d1b2a, #3a0ca3);
+      background-size: 400% 400%;
+      animation: gradientShift 15s ease infinite;
       min-height: 100vh;
-      padding: 20px;
+      margin: 0;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #e0e0e0;
+      color: #e6e6f0;
     }
-    .container { width: 100%; max-width: 460px; }
+    @keyframes gradientShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
+
+    .container { width: 100%; max-width: 480px; }
     .glass-card {
-      background: rgba(30, 30, 30, 0.55);
-      backdrop-filter: blur(20px);
+      background: rgba(20, 20, 30, 0.5);
+      backdrop-filter: blur(20px) saturate(140%);
       border-radius: 28px;
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 30px;
-      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.7);
-      overflow-y: auto;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 32px;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.6);
       max-height: 90vh;
+      overflow-y: auto;
+      animation: fadeIn 0.8s ease;
     }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+
     .header { text-align: center; margin-bottom: 28px; }
-    .logo { font-size: 32px; font-weight: bold; color: #c0aee0; }
-    .subtitle { font-size: 16px; color: #b0b0b0; }
+    .logo { font-size: 34px; font-weight: bold; color: #d1c4e9; text-shadow: 0 0 12px rgba(209,196,233,0.6);}
+    .subtitle { font-size: 16px; color: #aaa; }
 
     .btn {
       width: 100%;
       padding: 18px;
-      margin: 10px 0;
+      margin: 12px 0;
       border: none;
-      border-radius: 15px;
+      border-radius: 18px;
       font-size: 18px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
     }
     .btn-primary {
-      background: rgba(192, 174, 224, 0.2);
-      color: #d4c8f0;
-      border: 1px solid rgba(192, 174, 224, 0.35);
+      background: rgba(193, 163, 247, 0.15);
+      color: #e6ddff;
+      border: 1px solid rgba(193, 163, 247, 0.3);
+      box-shadow: 0 4px 15px rgba(193,163,247,0.2);
     }
     .btn-primary:hover {
-      background: rgba(192, 174, 224, 0.35);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 25px rgba(192, 174, 224, 0.25);
+      background: rgba(193, 163, 247, 0.3);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 25px rgba(193,163,247,0.35);
     }
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.07);
-      color: #dcdcdc;
-      border: 1px solid rgba(255, 255, 255, 0.15);
+      background: rgba(255, 255, 255, 0.08);
+      color: #ddd;
+      border: 1px solid rgba(255,255,255,0.15);
     }
     .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
 
     .section-title {
-      color: #c0aee0;
+      color: #d1c4e9;
       text-align: center;
       margin-bottom: 18px;
       font-size: 22px;
       font-weight: bold;
     }
     .form-group { margin-bottom: 18px; }
-    .form-label { display: block; font-weight: bold; margin-bottom: 8px; }
+    .form-label { display: block; font-weight: bold; margin-bottom: 8px; color: #e0e0e0; }
     .form-input {
       width: 100%;
       padding: 16px;
       border: none;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.08);
-      color: #f0f0f0;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
       font-size: 17px;
     }
     .form-input::placeholder { color: rgba(220, 220, 220, 0.6); }
 
     .hidden { display: none; }
     .back-btn {
-      margin-top: 20px;
-      padding: 12px;
+      margin-top: 22px;
+      padding: 14px;
       font-size: 16px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      border-radius: 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,0.15);
+      background: rgba(255,255,255,0.07);
       color: #c0aee0;
       cursor: pointer;
       width: 100%;
     }
 
-    /* Картинки меню списком */
     .menu-images img {
       width: 100%;
-      border-radius: 18px;
-      margin-bottom: 18px;
-      box-shadow: 0 8px 25px rgba(192, 174, 224, 0.25);
+      border-radius: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(193,163,247,0.3);
     }
   </style>
 </head>
@@ -111,10 +125,10 @@
       <!-- Главное меню -->
       <div id="main-menu">
         <button class="btn btn-primary" onclick="showSection('booking')">🍽️ Забронировать стол</button>
-        <button class="btn btn-primary" onclick="showSection('tickets')">🎫 Купить билет</button>
-        <button class="btn btn-primary" onclick="showSection('taxi')">🚕 Заказать такси</button>
+        <button class="btn btn-primary" onclick="showSection('tickets')">🎫 Получить пригласительный</button>
+        <button class="btn btn-primary" onclick="showSection('taxi')">🚕 Такси</button>
         <button class="btn btn-primary" onclick="showSection('menu')">📖 Меню</button>
-        <button class="btn btn-secondary" onclick="showSection('team')">👥 Присоединиться к команде</button>
+        <button class="btn btn-secondary" onclick="showSection('team')">👥 Хочу в команду</button>
       </div>
 
       <!-- 📖 Меню -->
@@ -137,55 +151,36 @@
       <div id="booking" class="hidden">
         <div class="section-title">Бронирование стола</div>
         <div class="form-group">
-          <label class="form-label">Выберите зал</label>
-          <select class="form-input">
-            <option>VIP-зал</option>
-            <option>Главный зал</option>
-            <option>Караоке-зал</option>
-          </select>
+          <label class="form-label">Ваше имя</label>
+          <input type="text" class="form-input" placeholder="Введите имя">
         </div>
         <div class="form-group">
-          <label class="form-label">Дата и время</label>
-          <input type="datetime-local" class="form-input">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Количество гостей</label>
-          <input type="number" class="form-input" min="1" max="20" value="2">
+          <label class="form-label">Телефон</label>
+          <input type="tel" class="form-input" placeholder="+7 (999) 999-99-99">
         </div>
         <button class="btn btn-primary">Забронировать</button>
         <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
       </div>
 
-      <!-- 🎫 Билеты -->
+      <!-- 🎫 Пригласительный -->
       <div id="tickets" class="hidden">
-        <div class="section-title">Выбор мероприятия</div>
-        <button class="btn btn-secondary">🎆 Пятничная вечеринка - 1000₽</button>
-        <button class="btn btn-secondary">🎵 DJ Night - 1500₽</button>
-        <button class="btn btn-secondary">🎭 Тематическая вечеринка - 2000₽</button>
+        <div class="section-title">Получить пригласительный</div>
         <div class="form-group">
-          <label class="form-label">Количество билетов</label>
-          <input type="number" class="form-input" min="1" max="10" value="1">
+          <label class="form-label">Ваше имя</label>
+          <input type="text" class="form-input" placeholder="Введите имя">
         </div>
-        <button class="btn btn-primary">Купить</button>
+        <div class="form-group">
+          <label class="form-label">Телефон</label>
+          <input type="tel" class="form-input" placeholder="+7 (999) 999-99-99">
+        </div>
+        <button class="btn btn-primary">Получить</button>
         <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
       </div>
 
       <!-- 🚕 Такси -->
       <div id="taxi" class="hidden">
-        <div class="section-title">Заказ такси</div>
-        <div class="form-group">
-          <label class="form-label">Откуда забрать</label>
-          <input type="text" class="form-input" placeholder="Адрес">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Время подачи</label>
-          <select class="form-input">
-            <option>Сейчас</option>
-            <option>19:00</option>
-            <option>20:00</option>
-          </select>
-        </div>
-        <button class="btn btn-primary">Заказать</button>
+        <div class="section-title">Такси</div>
+        <a href="https://taxi.yandex.ru" target="_blank" class="btn btn-primary">🚖 Вызвать в Яндекс.Такси</a>
         <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
       </div>
 
@@ -193,17 +188,22 @@
       <div id="team" class="hidden">
         <div class="section-title">Присоединиться к команде</div>
         <div class="form-group">
-          <label class="form-label">Ваше имя</label>
-          <input type="text" class="form-input" placeholder="Введите имя">
-        </div>
-        <div class="form-group">
-          <label class="form-label">Желаемая должность</label>
+          <label class="form-label">Должность</label>
           <select class="form-input">
+            <option>Танцовщица</option>
             <option>Бармен</option>
             <option>DJ</option>
             <option>Официант</option>
             <option>Охрана</option>
           </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Ваше имя</label>
+          <input type="text" class="form-input" placeholder="Введите имя">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Телефон</label>
+          <input type="tel" class="form-input" placeholder="+7 (999) 999-99-99">
         </div>
         <button class="btn btn-primary">Отправить заявку</button>
         <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
