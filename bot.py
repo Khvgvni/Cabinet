@@ -1,10 +1,10 @@
 import logging
-import csv
 import os
 import json
+import csv
 from telegram import (
     Update, InlineKeyboardButton, InlineKeyboardMarkup,
-    KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
+    KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, WebAppInfo
 )
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
@@ -13,7 +13,7 @@ from telegram.ext import (
 
 # 🔑 Настройки
 TOKEN = "8259299108:AAENuDFq8sb2OysuUacFQETMdhJg1LM-jmw"
-GROUP_CHAT_ID = -1003014842866
+GROUP_CHAT_ID = -1003014842866  # твоя админ-группа
 PRIVACY_URL = "https://docs.google.com/document/d/19eJqUD_zbSmc7_ug07XXYr25cV4BATTqBQwgsgdGX0U/edit?usp=sharing"
 
 # 📌 Ссылки и медиа
@@ -27,79 +27,38 @@ END_LAT, END_LON = 52.033938, 113.500514
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# 📌 Состояния
-(
-    REG_NAME, REG_PHONE,
-    TABLE_NAME, TABLE_PHONE, TABLE_DATE, TABLE_TIME, TABLE_COMMENT,
-    TEAM_NAME, TEAM_PHONE, TEAM_ROLE,
-    WAITING_LOCATION
-) = range(11)
-
-
-# ---------- УТИЛИТЫ ----------
-def nav_keyboard():
-    return InlineKeyboardMarkup([[InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu")]])
-
-
-def get_user_data(user_id: int):
-    try:
-        with open("users.csv", "r", encoding="utf-8") as f:
-            r = csv.reader(f, delimiter=";")
-            next(r, None)
-            for row in r:
-                if len(row) >= 3 and row[2] == str(user_id):
-                    return row
-    except FileNotFoundError:
-        return None
-    return None
-
-
-def is_registered(user_id: int) -> bool:
-    return get_user_data(user_id) is not None
-
 
 # ---------- СТАРТ ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-
-    if is_registered(user_id):
-        return await show_main_menu(update, context)
-
     kb = [
-        [InlineKeyboardButton("🎭 Афиша", callback_data="show_afisha")],
-        [InlineKeyboardButton("🔶 Пройти регистрацию", callback_data="register")]
-    ]
-    text = (
-        "👋 Привет! Добро пожаловать в чат-бот *Cabinet!* 🎉\n\n"
-        "Здесь вы можете получить информацию о грядущих событиях или, пройдя простую регистрацию, "
-        "забронировать стол, получить билет на ивент и воспользоваться другими полезными функциями.\n\n"
-        "✨ У нас также есть мини-приложение с красивым интерфейсом.\n\n"
-        f"Проходя регистрацию вы соглашаетесь с [политикой конфиденциальности]({PRIVACY_URL})\n\n"
-        "_P.S. Я создан, чтобы наполнить твой вечер самыми яркими эмоциями 😉_"
-    )
-    if update.message:
-        await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(kb),
-                                        parse_mode="Markdown", disable_web_page_preview=True)
-    else:
-        await update.callback_query.edit_message_text(text, reply_markup=InlineKeyboardMarkup(kb),
-                                                      parse_mode="Markdown", disable_web_page_preview=True)
-
-
-# ---------- МЕНЮ ----------
-async def show_main_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    kb = InlineKeyboardMarkup([
-        [InlineKeyboardButton("🎪 Открыть мини-приложение", web_app={"url": WEB_APP_URL})],
+        [InlineKeyboardButton("🎪 Открыть мини-приложение", web_app=WebAppInfo(url=WEB_APP_URL))],
         [InlineKeyboardButton("🍽 Забронировать стол", callback_data="book_table")],
         [InlineKeyboardButton("🚕 Заказать такси", callback_data="order_taxi")],
         [InlineKeyboardButton("🎟 Получить пригласительный", callback_data="invite")],
         [InlineKeyboardButton("👥 Хочу в команду", callback_data="join_team")],
         [InlineKeyboardButton("🎭 Афиша", callback_data="show_afisha")]
-    ])
-    text = "📌 Главное меню:\nВыберите действие:"
+    ]
+    text = (
+        "👋 Привет! Добро пожаловать в чат-бот *Cabinet!* 🎉\n\n"
+        "Здесь вы можете:\n"
+        "🍽 Забронировать стол\n"
+        "🎟 Получить пригласительный\n"
+        "🚕 Вызвать такси\n"
+        "👥 Подать заявку в команду\n\n"
+        "✨ У нас есть [мини-приложение] для красивого интерфейса.\n\n"
+        f"⚖️ Проходя регистрацию вы соглашаетесь с [политикой конфиденциальности]({PRIVACY_URL})\n\n"
+        "_P.S. Я создан, чтобы наполнить твой вечер самыми яркими эмоциями 😉_"
+    )
     if update.message:
-        await update.message.reply_text(text, reply_markup=kb)
+        await update.message.reply_text(
+            text, reply_markup=InlineKeyboardMarkup(kb),
+            parse_mode="Markdown", disable_web_page_preview=True
+        )
     else:
-        await update.callback_query.edit_message_text(text, reply_markup=kb)
+        await update.callback_query.edit_message_text(
+            text, reply_markup=InlineKeyboardMarkup(kb),
+            parse_mode="Markdown", disable_web_page_preview=True
+        )
 
 
 # ---------- ОБРАБОТКА ДАННЫХ ИЗ WEBAPP ----------
@@ -113,20 +72,20 @@ async def webapp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 f"🍽 Новая бронь!\n\n"
                 f"👤 {data['name']}\n"
                 f"📞 {data['phone']}\n"
-                f"📅 {data['date']} ⏰ {data['time']}\n"
-                f"💬 {data['comment']}"
+                f"📅 {data['date']}  🧑‍🤝‍🧑 {data['guests']} гостей"
             )
             await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
-            await update.message.reply_text("✅ Ваш столик забронирован! Ждём Вас 🎉")
+            await update.message.reply_text("✅ Уважаемый гость, стол забронирован! Ждём Вас!")
 
         elif data.get("type") == "ticket":
             msg = (
                 f"🎟 Новый запрос пригласительного!\n\n"
                 f"👤 {data['name']}\n"
-                f"📞 {data['phone']}"
+                f"📞 {data['phone']}\n"
+                f"Количество: {data['count']}"
             )
             await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
-            await update.message.reply_text("✅ Ваш пригласительный отправлен! 🎭")
+            await update.message.reply_text("✅ Ваш пригласительный отправлен!")
 
         elif data.get("type") == "team":
             msg = (
@@ -138,9 +97,64 @@ async def webapp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
             await update.message.reply_text("✅ Заявка отправлена! Администратор свяжется с вами.")
 
+        elif data.get("type") == "taxi":
+            msg = (
+                f"🚕 Новый заказ такси!\n\n"
+                f"📍 Откуда: {data['from']}\n"
+                f"⏰ Время: {data['time']}"
+            )
+            await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
+            await update.message.reply_text("✅ Такси заказано! 🚖")
+
     except Exception as e:
         logger.error(f"Ошибка WebApp: {e}")
         await update.message.reply_text("⚠️ Ошибка при обработке данных.")
+
+
+# ---------- ПРОЧИЕ ВКЛАДКИ ----------
+async def show_afisha(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    await q.answer()
+    await q.message.reply_text("🎭 Афиша: (сюда будут загружаться ближайшие события)")
+
+
+async def invite(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    await q.answer()
+    await q.message.reply_photo(INVITE_IMG, caption="🎟 Ваш пригласительный!")
+
+
+async def order_taxi(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    await q.answer()
+    kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🗺 Схема проезда", callback_data="show_route")],
+        [InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu")]
+    ])
+    await q.message.edit_text("🚕 Выберите действие:", reply_markup=kb)
+
+
+async def show_route(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    q = update.callback_query
+    await q.answer()
+    await q.message.reply_photo(ROUTE_IMG, caption=f"📍 Наш адрес: {DESTINATION}")
+    kb = InlineKeyboardMarkup([[InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu")]])
+    await q.message.reply_text("Что дальше?", reply_markup=kb)
+
+
+# ---------- ОБРАБОТКА КНОПОК ----------
+async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    data = update.callback_query.data
+    if data == "invite":
+        return await invite(update, context)
+    elif data == "order_taxi":
+        return await order_taxi(update, context)
+    elif data == "show_route":
+        return await show_route(update, context)
+    elif data == "show_afisha":
+        return await show_afisha(update, context)
+    elif data == "main_menu":
+        return await start(update, context)
 
 
 # ---------- MAIN ----------
@@ -148,8 +162,7 @@ def main():
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CallbackQueryHandler(show_main_menu, pattern="main_menu"))
-    app.add_handler(CallbackQueryHandler(show_main_menu))  # fallback
+    app.add_handler(CallbackQueryHandler(handle_button))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, webapp_handler))
 
     print("🤖 Бот запущен с WebApp API!")
