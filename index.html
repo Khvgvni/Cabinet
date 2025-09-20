@@ -8,7 +8,7 @@
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #000;
+      background: #0d0d0d; /* фон как у логотипа */
       color: #ffd700;
       display: flex;
       justify-content: center;
@@ -38,13 +38,11 @@
       margin-bottom: 20px;
     }
     .logo {
-      width: 120px;
-      margin-bottom: 10px;
-    }
-    .title {
-      font-size: 20px;
-      font-weight: bold;
-      margin-bottom: 20px;
+      max-width: 200px;
+      width: 100%;
+      height: auto;
+      display: block;
+      margin: 0 auto 20px auto;
     }
     .btn {
       width: 100%;
@@ -98,8 +96,7 @@
   <div class="container">
     <div class="glass">
       <div class="header">
-        <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/6499ef12d1eb697ff6cec148bf7938847d8dc21d/Logo.JPG" class="logo" alt="Logo">
-        <div class="title">🌟 Cabinet</div>
+        <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/Logo.JPG" class="logo" alt="Logo">
       </div>
 
       <!-- Главное меню -->
@@ -113,7 +110,6 @@
 
       <!-- 🍽️ Бронирование -->
       <div id="booking" class="section">
-        <div class="title">Бронирование стола</div>
         <div class="form-group">
           <label class="form-label">ФИО</label>
           <input id="book-name" class="form-input" placeholder="Введите ФИО">
@@ -128,7 +124,6 @@
 
       <!-- 🎟 Пригласительный -->
       <div id="invite" class="section">
-        <div class="title">Пригласительный</div>
         <div class="form-group">
           <label class="form-label">ФИО</label>
           <input id="inv-name" class="form-input" placeholder="Введите ФИО">
@@ -143,7 +138,6 @@
 
       <!-- 🚕 Такси -->
       <div id="taxi" class="section">
-        <div class="title">Такси</div>
         <button class="btn" onclick="showRoute()">🗺 Схема проезда</button>
         <a class="btn" href="https://3.redirect.appmetrica.yandex.com/route?end-lat=52.033938&end-lon=113.500514&end-text=Забайкальский+край,+Чита,+Ленинградская+15А" target="_blank">🚕 Вызвать такси</a>
         <button class="btn" onclick="showSection('main-menu')">← Назад</button>
@@ -151,22 +145,20 @@
 
       <!-- 📖 Меню -->
       <div id="menu" class="section">
-        <div class="title">Меню</div>
         <div class="menu-images">
-          <img src="menu1.png" alt="menu1">
-          <img src="menu2.png" alt="menu2">
-          <img src="menu3.png" alt="menu3">
-          <img src="menu4.png" alt="menu4">
-          <img src="menu5.png" alt="menu5">
-          <img src="menu6.png" alt="menu6">
-          <img src="menu7.png" alt="menu7">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu1.png" alt="menu1">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu2.png" alt="menu2">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu3.png" alt="menu3">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu4.png" alt="menu4">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu5.png" alt="menu5">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu6.png" alt="menu6">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu7.png" alt="menu7">
         </div>
         <button class="btn" onclick="showSection('main-menu')">← Назад</button>
       </div>
 
       <!-- 👥 Команда -->
       <div id="team" class="section">
-        <div class="title">Хочу в команду</div>
         <div class="form-group">
           <label class="form-label">ФИО</label>
           <input id="team-name" class="form-input" placeholder="Введите ФИО">
@@ -215,8 +207,7 @@
     }
 
     function showRoute() {
-      alert("🗺 Схема проезда откроется в новом окне.");
-      window.open("https://raw.githubusercontent.com/Khvgvni/Cabinet/99969ea4d569899defbd29eba0a610b496ec7065/Road%20map.jpg", "_blank");
+      window.open("https://raw.githubusercontent.com/Khvgvni/Cabinet/main/Road%20map.jpg", "_blank");
     }
 
     function sendTeam() {
