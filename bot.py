@@ -1,18 +1,15 @@
 import logging
-import os
 import json
-import csv
 from telegram import (
-    Update, InlineKeyboardButton, InlineKeyboardMarkup,
-    KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, WebAppInfo
+    Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 )
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
-    MessageHandler, ConversationHandler, ContextTypes, filters
+    MessageHandler, ContextTypes, filters
 )
 
 # 🔑 Настройки
-TOKEN = "8259299108:AAENuDFq8sb2OysuUacFQETMdhJg1LM-jmw"
+TOKEN = "ТВОЙ_ТОКЕН"
 GROUP_CHAT_ID = -1003014842866  # твоя админ-группа
 PRIVACY_URL = "https://docs.google.com/document/d/19eJqUD_zbSmc7_ug07XXYr25cV4BATTqBQwgsgdGX0U/edit?usp=sharing"
 
@@ -21,12 +18,10 @@ WEB_APP_URL = "https://khvgvni.github.io/Cabinet/"
 ROUTE_IMG = "https://raw.githubusercontent.com/Khvgvni/Cabinet/68248242d6ba3a80bc1d2c5d86f4c003e4b18cfb/Road%20map.jpg"
 INVITE_IMG = "https://raw.githubusercontent.com/Khvgvni/Cabinet/d3ef68f9ae102683d9c5c5dd797d163aa02c3566/Invitation.png"
 DESTINATION = "Забайкальский край, Чита, Ленинградская улица, 15А"
-END_LAT, END_LON = 52.035807, 113.504328.
 
 # 📌 Логирование
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
 
 # ---------- СТАРТ ----------
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -60,7 +55,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             parse_mode="Markdown", disable_web_page_preview=True
         )
 
-
 # ---------- ОБРАБОТКА ДАННЫХ ИЗ WEBAPP ----------
 async def webapp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
     try:
@@ -69,12 +63,12 @@ async def webapp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if data.get("type") == "booking":
             msg = (
-                f"🍽 Новая бронь!\n\n"
+                f"🍽 Новая заявка на бронь!\n\n"
                 f"👤 {data['name']}\n"
                 f"📞 {data['phone']}"
             )
             await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
-            await update.message.reply_text("✅ Уважаемый гость, стол забронирован! Ждём Вас!")
+            await update.message.reply_text("✅ Ваша заявка принята! Мы с вами свяжемся.")
 
         elif data.get("type") == "ticket":
             msg = (
@@ -109,19 +103,16 @@ async def webapp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
         logger.error(f"Ошибка WebApp: {e}")
         await update.message.reply_text("⚠️ Ошибка при обработке данных.")
 
-
 # ---------- ПРОЧИЕ ВКЛАДКИ ----------
 async def show_afisha(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     await q.message.reply_text("🎭 Афиша: (сюда будут загружаться ближайшие события)")
 
-
 async def invite(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     await q.message.reply_photo(INVITE_IMG, caption="🎟 Ваш пригласительный!")
-
 
 async def order_taxi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
@@ -132,14 +123,12 @@ async def order_taxi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     ])
     await q.message.edit_text("🚕 Выберите действие:", reply_markup=kb)
 
-
 async def show_route(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     await q.message.reply_photo(ROUTE_IMG, caption=f"📍 Наш адрес: {DESTINATION}")
     kb = InlineKeyboardMarkup([[InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu")]])
     await q.message.reply_text("Что дальше?", reply_markup=kb)
-
 
 # ---------- ОБРАБОТКА КНОПОК ----------
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -155,18 +144,15 @@ async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     elif data == "main_menu":
         return await start(update, context)
 
-
 # ---------- MAIN ----------
 def main():
     app = Application.builder().token(TOKEN).build()
-
     app.add_handler(CommandHandler("start", start))
     app.add_handler(CallbackQueryHandler(handle_button))
     app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, webapp_handler))
 
     print("🤖 Бот запущен с WebApp API!")
     app.run_polling()
-
 
 if __name__ == "__main__":
     main()
