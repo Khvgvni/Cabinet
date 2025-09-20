@@ -1,1 +1,207 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cabinet Club</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #0d0d0d;
+      margin: 0;
+      padding: 20px;
+      color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+    .container { width: 100%; max-width: 420px; }
+    .glass-card {
+      background: rgba(20, 20, 20, 0.7);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      border-radius: 24px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.7);
+      animation: fadeIn 0.6s ease;
+    }
+    @keyframes fadeIn {
+      from {opacity: 0; transform: translateY(20px);}
+      to {opacity: 1; transform: translateY(0);}
+    }
+    .header { text-align: center; margin-bottom: 25px; }
+    .logo {
+      font-size: 32px;
+      font-weight: bold;
+      color: #ffd700;
+      text-shadow: 0 0 10px rgba(255,215,0,0.6);
+      margin-bottom: 8px;
+    }
+    .subtitle { font-size: 15px; color: #aaa; }
+    .btn {
+      width: 100%;
+      padding: 16px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 16px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: rgba(255, 215, 0, 0.1);
+      color: #ffd700;
+      border: 1px solid rgba(255, 215, 0, 0.3);
+    }
+    .btn:hover {
+      background: rgba(255, 215, 0, 0.25);
+      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.4);
+      transform: translateY(-2px);
+    }
+    .section-title {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 16px;
+      font-weight: bold;
+      color: #ffd700;
+    }
+    .form-group { margin-bottom: 14px; }
+    .form-label { margin-bottom: 6px; display: block; color: #ddd; font-weight: 500; }
+    .form-input {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      font-size: 15px;
+    }
+    .form-input::placeholder { color: rgba(200,200,200,0.7); }
+    .hidden { display: none; }
+    .menu-images img {
+      width: 100%;
+      border-radius: 18px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(255,215,0,0.2);
+    }
+    .road-img {
+      width: 100%;
+      border-radius: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 6px 20px rgba(255,215,0,0.2);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="glass-card">
+      <div class="header">
+        <div class="logo">🌌 Cabinet</div>
+        <div class="subtitle">Идеальный вечер начинается здесь</div>
+      </div>
+
+      <!-- Главное меню -->
+      <div id="main-menu">
+        <button class="btn" onclick="showSection('booking')">🍽 Забронировать стол</button>
+        <button class="btn" onclick="showSection('invite')">🎟 Получить пригласительный</button>
+        <button class="btn" onclick="showSection('taxi')">🚕 Такси</button>
+        <button class="btn" onclick="showSection('team')">👥 Хочу в команду</button>
+        <button class="btn" onclick="showSection('menu')">📖 Меню</button>
+      </div>
+
+      <!-- 🍽️ Бронирование стола -->
+      <div id="booking" class="hidden">
+        <div class="section-title">Бронирование стола</div>
+        <div class="form-group"><label class="form-label">ФИО</label><input id="book-name" class="form-input" placeholder="Введите ФИО"></div>
+        <div class="form-group"><label class="form-label">Телефон</label><input id="book-phone" class="form-input" placeholder="+7 (999) 999-99-99"></div>
+        <div class="form-group"><label class="form-label">Дата и время</label><input id="book-datetime" type="datetime-local" class="form-input"></div>
+        <div class="form-group"><label class="form-label">Комментарий</label><input id="book-comment" class="form-input" placeholder="Например: столик у сцены"></div>
+        <button class="btn" onclick="sendBooking()">Забронировать</button>
+        <button class="btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 🎟 Пригласительный -->
+      <div id="invite" class="hidden">
+        <div class="section-title">Получить пригласительный</div>
+        <div class="form-group"><label class="form-label">ФИО</label><input id="invite-name" class="form-input" placeholder="Введите ФИО"></div>
+        <div class="form-group"><label class="form-label">Телефон</label><input id="invite-phone" class="form-input" placeholder="+7 (999) 999-99-99"></div>
+        <button class="btn" onclick="sendInvite()">Получить</button>
+        <button class="btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 🚕 Такси -->
+      <div id="taxi" class="hidden">
+        <div class="section-title">Такси</div>
+        <img class="road-img" src="https://raw.githubusercontent.com/Khvgvni/Cabinet/99969ea4d569899defbd29eba0a610b496ec7065/Road%20map.jpg" alt="Схема проезда">
+        <button class="btn" onclick="sendTaxi('yandex')">🚖 Вызвать в Яндекс Такси</button>
+        <button class="btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 👥 Команда -->
+      <div id="team" class="hidden">
+        <div class="section-title">Хочу в команду</div>
+        <div class="form-group"><label class="form-label">ФИО</label><input id="team-name" class="form-input" placeholder="Введите ФИО"></div>
+        <div class="form-group"><label class="form-label">Телефон</label><input id="team-phone" class="form-input" placeholder="+7 (999) 999-99-99"></div>
+        <div class="form-group"><label class="form-label">Должность</label><input id="team-role" class="form-input" placeholder="Кем хотите работать?"></div>
+        <button class="btn" onclick="sendTeam()">Отправить заявку</button>
+        <button class="btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 📖 Меню -->
+      <div id="menu" class="hidden">
+        <div class="section-title">Меню</div>
+        <div class="menu-images">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu1.png" alt="Меню 1">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu2.png" alt="Меню 2">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu3.png" alt="Меню 3">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu4.png" alt="Меню 4">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu5.png" alt="Меню 5">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu6.png" alt="Меню 6">
+          <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/main/menu7.png" alt="Меню 7">
+        </div>
+        <button class="btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function showSection(id) {
+      document.querySelectorAll('#main-menu, #booking, #invite, #taxi, #team, #menu')
+        .forEach(s => s.classList.add('hidden'));
+      document.getElementById(id).classList.remove('hidden');
+    }
+    function sendBooking() {
+      Telegram.WebApp.sendData(JSON.stringify({
+        type: "booking",
+        name: document.getElementById("book-name").value,
+        phone: document.getElementById("book-phone").value,
+        datetime: document.getElementById("book-datetime").value,
+        comment: document.getElementById("book-comment").value
+      }));
+    }
+    function sendInvite() {
+      Telegram.WebApp.sendData(JSON.stringify({
+        type: "invite",
+        name: document.getElementById("invite-name").value,
+        phone: document.getElementById("invite-phone").value
+      }));
+    }
+    function sendTaxi(action) {
+      Telegram.WebApp.sendData(JSON.stringify({ type: "taxi", action }));
+    }
+    function sendTeam() {
+      Telegram.WebApp.sendData(JSON.stringify({
+        type: "team",
+        name: document.getElementById("team-name").value,
+        phone: document.getElementById("team-phone").value,
+        role: document.getElementById("team-role").value
+      }));
+    }
+    Telegram.WebApp.ready();
+  </script>
+</body>
+</html>
 
