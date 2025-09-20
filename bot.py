@@ -4,7 +4,7 @@ import os
 import json
 from telegram import (
     Update, InlineKeyboardButton, InlineKeyboardMarkup,
-    KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, WebAppInfo
+    KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove
 )
 from telegram.ext import (
     Application, CommandHandler, CallbackQueryHandler,
@@ -277,7 +277,7 @@ async def handle_webapp(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg = (
                 f"🍽 Новая бронь (WebApp)!\n\n"
                 f"👤 ФИО: {data.get('name')}\n"
-                f"📞 Телефон: {data.get('phone')}\n"
+                f"📞 Телефон: {data.get('phone')}"
             )
             await update.message.reply_text("✅ Ваш стол забронирован! Ждём Вас!")
             await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
@@ -374,7 +374,7 @@ def main():
     app.add_handler(conv_table)
     app.add_handler(conv_taxi)
     app.add_handler(conv_team)
-    app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp))
+    app.add_handler(MessageHandler(filters.WEB_APP_DATA, handle_webapp))  # ✅ Фикс здесь
     app.add_handler(CallbackQueryHandler(handle_button))
 
     print("🤖 Бот запущен!")
