@@ -9,7 +9,7 @@ from telegram.ext import (
 )
 
 # 🔑 Настройки
-TOKEN = "ТВОЙ_ТОКЕН"
+TOKEN = "8259299108:AAENuDFq8sb2OysuUacFQETMdhJg1LM-jmw"
 GROUP_CHAT_ID = -1003014842866  # твоя админ-группа
 PRIVACY_URL = "https://docs.google.com/document/d/19eJqUD_zbSmc7_ug07XXYr25cV4BATTqBQwgsgdGX0U/edit?usp=sharing"
 
