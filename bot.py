@@ -71,8 +71,7 @@ async def webapp_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
             msg = (
                 f"🍽 Новая бронь!\n\n"
                 f"👤 {data['name']}\n"
-                f"📞 {data['phone']}\n"
-                f"📅 {data['date']}  🧑‍🤝‍🧑 {data['guests']} гостей"
+                f"📞 {data['phone']}"
             )
             await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
             await update.message.reply_text("✅ Уважаемый гость, стол забронирован! Ждём Вас!")
