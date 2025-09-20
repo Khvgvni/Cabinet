@@ -1,6 +1,7 @@
 import logging
 import csv
 import os
+import json
 from telegram import (
     Update, InlineKeyboardButton, InlineKeyboardMarkup,
     KeyboardButton, ReplyKeyboardMarkup, ReplyKeyboardRemove, WebAppInfo
@@ -12,7 +13,7 @@ from telegram.ext import (
 
 # 🔑 Настройки
 TOKEN = os.getenv("BOT_TOKEN") or "ТВОЙ_ТОКЕН"
-GROUP_CHAT_ID = int(os.getenv("GROUP_CHAT_ID", "-1001234567890"))
+GROUP_CHAT_ID = int(os.getenv("GROUP_CHAT_ID", "-1003014842866"))
 PRIVACY_URL = "https://docs.google.com/document/d/19eJqUD_zbSmc7_ug07XXYr25cV4BATTqBQwgsgdGX0U/edit?usp=sharing"
 
 # 📌 Ссылки и медиа
@@ -29,10 +30,10 @@ logger = logging.getLogger(__name__)
 # 📌 Состояния
 (
     REG_NAME, REG_PHONE,
-    TABLE_NAME, TABLE_PHONE, TABLE_DATE, TABLE_TIME, TABLE_COMMENT,
+    TABLE_NAME, TABLE_PHONE, TABLE_COMMENT,
     TEAM_NAME, TEAM_PHONE, TEAM_ROLE,
     WAITING_LOCATION
-) = range(11)
+) = range(9)
 
 
 # ---------- УТИЛИТЫ ----------
@@ -138,11 +139,6 @@ async def table_name(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["table_name"] = update.message.text
     await update.message.reply_text("📞 Введите ваш телефон:")
     return TABLE_PHONE
-
-async def table_time(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    context.user_data["table_time"] = update.message.text
-    await update.message.reply_text("💬 Добавьте комментарий (или напишите - нет):")
-    return TABLE_COMMENT
 
 async def table_comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
     context.user_data["table_comment"] = update.message.text
@@ -271,6 +267,40 @@ async def show_afisha(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await q.message.reply_text("🎭 Афиша: (сюда будут загружаться ближайшие события)", reply_markup=nav_keyboard())
 
 
+# ---------- WEBAPP ДАННЫЕ ----------
+async def handle_webapp(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    try:
+        data = json.loads(update.message.web_app_data.data)
+        logger.info(f"📩 Получены данные из WebApp: {data}")
+
+        if data["type"] == "booking":
+            msg = (
+                f"🍽 Новая бронь (WebApp)!\n\n"
+                f"👤 ФИО: {data.get('name')}\n"
+                f"📞 Телефон: {data.get('phone')}\n"
+            )
+            await update.message.reply_text("✅ Ваш стол забронирован! Ждём Вас!")
+            await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
+
+        elif data["type"] == "team":
+            msg = (
+                f"👥 Новая заявка в команду (WebApp)!\n\n"
+                f"👤 ФИО: {data.get('name')}\n"
+                f"📞 Телефон: {data.get('phone')}\n"
+                f"💼 Должность: {data.get('role')}"
+            )
+            await update.message.reply_text("✅ В течение недели администратор свяжется с вами!")
+            await context.bot.send_message(chat_id=GROUP_CHAT_ID, text=msg)
+
+        elif data["type"] == "invite":
+            await update.message.reply_text("🎟 Вот ваш пригласительный!")
+            await update.message.reply_photo(INVITE_IMG)
+
+    except Exception as e:
+        logger.error(f"Ошибка обработки web_app_data: {e}")
+        await update.message.reply_text("⚠️ Ошибка обработки данных из мини-приложения.")
+
+
 # ---------- ОБРАБОТКА КНОПОК ----------
 async def handle_button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     data = update.callback_query.data
@@ -344,6 +374,7 @@ def main():
     app.add_handler(conv_table)
     app.add_handler(conv_taxi)
     app.add_handler(conv_team)
+    app.add_handler(MessageHandler(filters.StatusUpdate.WEB_APP_DATA, handle_webapp))
     app.add_handler(CallbackQueryHandler(handle_button))
 
     print("🤖 Бот запущен!")
