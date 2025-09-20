@@ -21,7 +21,7 @@ WEB_APP_URL = "https://khvgvni.github.io/Cabinet/"
 ROUTE_IMG = "https://raw.githubusercontent.com/Khvgvni/Cabinet/68248242d6ba3a80bc1d2c5d86f4c003e4b18cfb/Road%20map.jpg"
 INVITE_IMG = "https://raw.githubusercontent.com/Khvgvni/Cabinet/d3ef68f9ae102683d9c5c5dd797d163aa02c3566/Invitation.png"
 DESTINATION = "Забайкальский край, Чита, Ленинградская улица, 15А"
-END_LAT, END_LON = 52.035807, 113.504328
+END_LAT, END_LON = 52.035807, 113.504328.
 
 # 📌 Логирование
 logging.basicConfig(level=logging.INFO)
