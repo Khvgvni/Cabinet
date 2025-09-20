@@ -9,18 +9,25 @@ from telegram.ext import (
 )
 
 # 🔑 Настройки
-TOKEN = "8259299108:AAENuDFq8sb2OysuUacFQETMdhJg1LM-jmw"  
-GROUP_CHAT_ID = -1003014842866  
+TOKEN = "ТВОЙ_ТОКЕН"  # вставь сюда токен своего бота
+GROUP_CHAT_ID = -1003014842866  # ID твоей админ-группы
 PRIVACY_URL = "https://docs.google.com/document/d/19eJqUD_zbSmc7_ug07XXYr25cV4BATTqBQwgsgdGX0U/edit?usp=sharing"
 
 # 📌 Ссылки и медиа
 WEB_APP_URL = "https://khvgvni.github.io/Cabinet/"
 ROUTE_IMG = "https://raw.githubusercontent.com/Khvgvni/Cabinet/68248242d6ba3a80bc1d2c5d86f4c003e4b18cfb/Road%20map.jpg"
 INVITE_IMG = "https://raw.githubusercontent.com/Khvgvni/Cabinet/d3ef68f9ae102683d9c5c5dd797d163aa02c3566/Invitation.png"
-# 📌 Новый адрес
-DESTINATION = "Забайкальский край, Чита, правильный конечный адрес"
+
+# 📍 Адрес назначения
+DESTINATION = "Забайкальский край, Чита, конечный адрес"
 END_LAT, END_LON = 52.035807, 113.504328
 
+# 📍 Ссылка для вызова такси в Яндекс Go
+YANDEX_GO_LINK = (
+    "https://3.redirect.appmetrica.yandex.com/route"
+    f"?end-lat={END_LAT}&end-lon={END_LON}"
+    "&appmetrica_tracking_id=1178268795219780156"
+)
 
 # 📌 Логирование
 logging.basicConfig(level=logging.INFO)
@@ -126,16 +133,20 @@ async def order_taxi(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
     kb = InlineKeyboardMarkup([
+        [InlineKeyboardButton("🚕 Вызвать такси в Яндекс Go", url=YANDEX_GO_LINK)],
         [InlineKeyboardButton("🗺 Схема проезда", callback_data="show_route")],
         [InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu")]
     ])
-    await q.message.edit_text("🚕 Выберите действие:", reply_markup=kb)
+    await q.message.edit_text("🚖 Для заказа такси нажмите кнопку ниже:", reply_markup=kb)
 
 
 async def show_route(update: Update, context: ContextTypes.DEFAULT_TYPE):
     q = update.callback_query
     await q.answer()
-    await q.message.reply_photo(ROUTE_IMG, caption=f"📍 Наш адрес: {DESTINATION}")
+    await q.message.reply_photo(
+        ROUTE_IMG,
+        caption=f"📍 Наш адрес: {DESTINATION}\n\n🌍 Координаты: {END_LAT}, {END_LON}"
+    )
     kb = InlineKeyboardMarkup([[InlineKeyboardButton("🏠 Главное меню", callback_data="main_menu")]])
     await q.message.reply_text("Что дальше?", reply_markup=kb)
 
