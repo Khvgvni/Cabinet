@@ -201,9 +201,11 @@ async def handle_location(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if update.message.location:
         lat, lon = update.message.location.latitude, update.message.location.longitude
         url = (
-            f"https://3.redirect.appmetrica.yandex.com/route?"
-            f"start-lat={lat}&start-lon={lon}&end-lat={END_LAT}&end-lon={END_LON}"
-        )
+    f"https://3.redirect.appmetrica.yandex.com/route?"
+    f"start-lat={lat}&start-lon={lon}"
+    f"&end-lat={END_LAT}&end-lon={END_LON}"
+    f"&end-text=Забайкальский+край,+Чита,+Ленинградская+15А"
+)
         kb = InlineKeyboardMarkup([[InlineKeyboardButton("🚕 Построить маршрут в Яндекс Go", url=url)]])
         await update.message.reply_text("✅ Маршрут готов!", reply_markup=ReplyKeyboardRemove())
         await update.message.reply_text("Нажмите кнопку ниже, чтобы вызвать такси:", reply_markup=kb)
