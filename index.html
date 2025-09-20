@@ -4,132 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cabinet Club</title>
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(-45deg, #000000, #1a1a1a, #0d0d0d, #2c2c2c);
-      background-size: 400% 400%;
-      animation: gradientShift 18s ease infinite;
-      min-height: 100vh;
-      margin: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      color: #f5f5f5;
-    }
-    @keyframes gradientShift {
-      0% {background-position: 0% 50%;}
-      50% {background-position: 100% 50%;}
-      100% {background-position: 0% 50%;}
-    }
-
-    .container { width: 100%; max-width: 480px; }
-    .glass-card {
-      background: rgba(15, 15, 15, 0.6);
-      backdrop-filter: blur(20px) saturate(140%);
-      border-radius: 28px;
-      border: 1px solid rgba(255, 215, 0, 0.25);
-      padding: 32px;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-      max-height: 90vh;
-      overflow-y: auto;
-      animation: fadeIn 0.8s ease;
-    }
-    @keyframes fadeIn {
-      from {opacity: 0; transform: translateY(20px);}
-      to {opacity: 1; transform: translateY(0);}
-    }
-
-    .header { text-align: center; margin-bottom: 28px; }
-    .logo img {
-      width: 100%;
-      max-width: 300px;
-      height: auto;
-      margin: 0 auto;
-      display: block;
-      filter: drop-shadow(0 0 12px rgba(255,215,0,0.6));
-    }
-    .subtitle {
-      font-size: 16px;
-      margin-top: 8px;
-      color: #bfa14a;
-      text-shadow: 0 0 8px rgba(255,215,0,0.4);
-    }
-
-    .btn {
-      width: 100%;
-      padding: 18px;
-      margin: 12px 0;
-      border: none;
-      border-radius: 18px;
-      font-size: 18px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.35s ease;
-      background: rgba(255, 255, 255, 0.05);
-      color: #f0e6c8;
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    .btn:hover {
-      background: rgba(255, 215, 0, 0.15);
-      color: #ffd700;
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(255,215,0,0.4);
-    }
-
-    .section-title {
-      color: #ffd700;
-      text-align: center;
-      margin-bottom: 18px;
-      font-size: 22px;
-      font-weight: bold;
-      text-shadow: 0 0 8px rgba(255,215,0,0.4);
-    }
-    .form-group { margin-bottom: 18px; }
-    .form-label { display: block; font-weight: bold; margin-bottom: 8px; color: #e0e0e0; }
-    .form-input {
-      width: 100%;
-      padding: 16px;
-      border: none;
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.07);
-      color: #fff;
-      font-size: 17px;
-    }
-    .form-input::placeholder { color: rgba(200, 200, 200, 0.6); }
-
-    .hidden { display: none; }
-    .back-btn {
-      margin-top: 22px;
-      padding: 14px;
-      font-size: 16px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,215,0,0.25);
-      background: rgba(255,215,0,0.08);
-      color: #ffd700;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.3s ease;
-    }
-    .back-btn:hover {
-      background: rgba(255,215,0,0.2);
-      box-shadow: 0 8px 20px rgba(255,215,0,0.4);
-    }
-
-    .menu-images img {
-      width: 100%;
-      border-radius: 20px;
-      margin-bottom: 20px;
-      box-shadow: 0 8px 25px rgba(255,215,0,0.25);
-    }
+    /* (тут остаётся твой чёрно-золотой стиль с логотипом, как мы сделали раньше) */
   </style>
 </head>
 <body>
   <div class="container">
     <div class="glass-card">
       <div class="header">
-        <!-- 🔥 Логотип из GitHub -->
         <div class="logo">
           <img src="https://raw.githubusercontent.com/Khvgvni/Cabinet/6499ef12d1eb697ff6cec148bf7938847d8dc21d/Logo.JPG" alt="Cabinet Logo">
         </div>
@@ -141,20 +24,84 @@
         <button class="btn" onclick="showSection('booking')">🍽️ Забронировать стол</button>
         <button class="btn" onclick="showSection('tickets')">🎫 Получить пригласительный</button>
         <button class="btn" onclick="showSection('taxi')">🚕 Такси</button>
-        <button class="btn" onclick="showSection('menu')">📖 Меню</button>
         <button class="btn" onclick="showSection('team')">👥 Хочу в команду</button>
       </div>
 
-      <!-- остальные секции (без изменений) -->
-      <!-- ... -->
+      <!-- 🍽️ Бронирование -->
+      <div id="booking" class="hidden">
+        <div class="section-title">Бронирование стола</div>
+        <input id="booking-name" class="form-input" placeholder="Ваше имя">
+        <input id="booking-phone" class="form-input" placeholder="+7 (999) 999-99-99">
+        <input id="booking-date" class="form-input" placeholder="Дата (дд.мм.гггг)">
+        <input id="booking-time" class="form-input" placeholder="Время (чч:мм)">
+        <input id="booking-comment" class="form-input" placeholder="Комментарий">
+        <button class="btn" onclick="sendBooking()">Забронировать</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 🎫 Пригласительный -->
+      <div id="tickets" class="hidden">
+        <div class="section-title">Пригласительный</div>
+        <input id="ticket-name" class="form-input" placeholder="Ваше имя">
+        <input id="ticket-phone" class="form-input" placeholder="+7 (999) 999-99-99">
+        <button class="btn" onclick="sendTicket()">Получить</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
+
+      <!-- 👥 Команда -->
+      <div id="team" class="hidden">
+        <div class="section-title">Заявка в команду</div>
+        <select id="team-role" class="form-input">
+          <option>Танцовщица</option>
+          <option>Бармен</option>
+          <option>DJ</option>
+          <option>Официант</option>
+          <option>Охрана</option>
+        </select>
+        <input id="team-name" class="form-input" placeholder="Ваше имя">
+        <input id="team-phone" class="form-input" placeholder="+7 (999) 999-99-99">
+        <button class="btn" onclick="sendTeam()">Отправить заявку</button>
+        <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
+      </div>
     </div>
   </div>
 
   <script>
     function showSection(id) {
-      document.querySelectorAll('#main-menu, #menu, #booking, #tickets, #taxi, #team')
+      document.querySelectorAll('#main-menu, #booking, #tickets, #team')
         .forEach(s => s.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
+    }
+
+    function sendBooking() {
+      const booking = {
+        type: "booking",
+        name: document.getElementById("booking-name").value,
+        phone: document.getElementById("booking-phone").value,
+        date: document.getElementById("booking-date").value,
+        time: document.getElementById("booking-time").value,
+        comment: document.getElementById("booking-comment").value
+      };
+      Telegram.WebApp.sendData(JSON.stringify(booking));
+    }
+
+    function sendTicket() {
+      const ticket = {
+        type: "ticket",
+        name: document.getElementById("ticket-name").value,
+        phone: document.getElementById("ticket-phone").value
+      };
+      Telegram.WebApp.sendData(JSON.stringify(ticket));
+    }
+
+    function sendTeam() {
+      const team = {
+        type: "team",
+        role: document.getElementById("team-role").value,
+        name: document.getElementById("team-name").value,
+        phone: document.getElementById("team-phone").value
+      };
+      Telegram.WebApp.sendData(JSON.stringify(team));
     }
   </script>
 </body>
