@@ -152,7 +152,6 @@ async def table_comment(update: Update, context: ContextTypes.DEFAULT_TYPE):
         writer = csv.writer(f, delimiter=";")
         writer.writerow([
             context.user_data["table_name"], context.user_data["table_phone"],
-            context.user_data["table_date"], context.user_data["table_time"],
             context.user_data["table_comment"], user_id
         ])
 
