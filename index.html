@@ -32,7 +32,7 @@
       to {opacity: 1; transform: translateY(0);}
     }
     .header { text-align: center; margin-bottom: 20px; }
-    .logo-img { max-width: 120px; border-radius: 50%; margin-bottom: 12px; }
+    .logo-img { max-width: 140px; border-radius: 50%; margin-bottom: 12px; }
     .subtitle { font-size: 15px; color: #ccc; }
 
     .btn {
@@ -97,7 +97,7 @@
       <!-- Главное меню -->
       <div id="main-menu">
         <button class="btn" onclick="showSection('booking')">🍽️ Забронировать стол</button>
-        <button class="btn" onclick="showSection('tickets')">🎫 Купить билет</button>
+        <button class="btn" onclick="showSection('tickets')">🎫 Получить пригласительный</button>
         <button class="btn" onclick="showSection('taxi')">🚕 Заказать такси</button>
         <button class="btn" onclick="showSection('team')">👥 Присоединиться к команде</button>
       </div>
@@ -113,13 +113,13 @@
         <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
       </div>
 
-      <!-- Билеты -->
+      <!-- Пригласительный -->
       <div id="tickets" class="hidden">
-        <div class="section-title">Билеты</div>
+        <div class="section-title">Пригласительный</div>
         <div class="form-group"><label class="form-label">Ваше имя</label><input type="text" class="form-input" id="ticket-name" placeholder="Введите ваше имя"></div>
         <div class="form-group"><label class="form-label">Телефон</label><input type="tel" class="form-input" id="ticket-phone" placeholder="+7 (999) 999-99-99"></div>
         <div class="form-group"><label class="form-label">Количество</label><input type="number" class="form-input" id="ticket-count" min="1" max="10" value="1"></div>
-        <button class="btn" onclick="buyTicket()">Получить билет</button>
+        <button class="btn" onclick="buyTicket()">Получить пригласительный</button>
         <button class="back-btn" onclick="showSection('main-menu')">← Назад</button>
       </div>
 
@@ -129,8 +129,8 @@
         <div class="form-group"><label class="form-label">Откуда забрать?</label><input type="text" class="form-input" id="taxi-from" placeholder="Адрес отправления"></div>
         <div class="form-group"><label class="form-label">Время</label>
           <select class="form-input" id="taxi-time">
-            <option value="now">Сейчас</option><option value="19:00">19:00</option><option value="20:00">20:00</option>
-            <option value="21:00">21:00</option><option value="22:00">22:00</option>
+            <option value="now">Сейчас</option><option value="19:00">19:00</option>
+            <option value="20:00">20:00</option><option value="21:00">21:00</option><option value="22:00">22:00</option>
           </select>
         </div>
         <button class="btn" onclick="orderTaxi()">Заказать такси</button>
@@ -143,8 +143,8 @@
         <div class="form-group"><label class="form-label">Имя</label><input type="text" class="form-input" id="team-name" placeholder="Введите ваше имя"></div>
         <div class="form-group"><label class="form-label">Должность</label>
           <select class="form-input" id="team-position">
-            <option value="Бармен">Бармен</option><option value="DJ">DJ</option><option value="Официант">Официант</option>
-            <option value="Охрана">Охрана</option><option value="Другое">Другое</option>
+            <option value="Бармен">Бармен</option><option value="DJ">DJ</option>
+            <option value="Официант">Официант</option><option value="Охрана">Охрана</option><option value="Другое">Другое</option>
           </select>
         </div>
         <div class="form-group"><label class="form-label">Телефон</label><input type="tel" class="form-input" id="team-phone" placeholder="+7 (999) 999-99-99"></div>
@@ -162,33 +162,58 @@
 
   <script>
     function showSection(id) {
-      document.querySelectorAll('#main-menu, #booking, #tickets, #taxi, #team, #success').forEach(s => s.classList.add('hidden'));
+      document.querySelectorAll('#main-menu, #booking, #tickets, #taxi, #team, #success')
+        .forEach(s => s.classList.add('hidden'));
       document.getElementById(id).classList.remove('hidden');
     }
+
     function showSuccess(msg) {
       document.getElementById('success-text').textContent = msg;
       showSection('success');
     }
 
     function bookTable() {
-      const data = { type:"booking", date:booking-date.value, guests:guests.value, name:booking-name.value, phone:booking-phone.value };
+      const data = {
+        type: "booking",
+        date: document.getElementById("booking-date").value,
+        guests: document.getElementById("guests").value,
+        name: document.getElementById("booking-name").value,
+        phone: document.getElementById("booking-phone").value
+      };
       Telegram.WebApp.sendData(JSON.stringify(data));
-      showSuccess("Стол успешно забронирован!");
+      showSuccess("✅ Уважаемый гость, стол забронирован! Ждём Вас!");
     }
+
     function buyTicket() {
-      const data = { type:"ticket", name:ticket-name.value, phone:ticket-phone.value, count:ticket-count.value };
+      const data = {
+        type: "ticket",
+        name: document.getElementById("ticket-name").value,
+        phone: document.getElementById("ticket-phone").value,
+        count: document.getElementById("ticket-count").value
+      };
       Telegram.WebApp.sendData(JSON.stringify(data));
-      showSuccess("Билет отправлен!");
+      showSuccess("✅ Ваш пригласительный отправлен!");
     }
+
     function orderTaxi() {
-      const data = { type:"taxi", from:taxi-from.value, time:taxi-time.value };
+      const data = {
+        type: "taxi",
+        from: document.getElementById("taxi-from").value,
+        time: document.getElementById("taxi-time").value
+      };
       Telegram.WebApp.sendData(JSON.stringify(data));
-      showSuccess("Такси заказано!");
+      showSuccess("✅ Такси заказано!");
     }
+
     function joinTeam() {
-      const data = { type:"team", name:team-name.value, role:team-position.value, phone:team-phone.value };
+      const data = {
+        type: "team",
+        name: document.getElementById("team-name").value,
+        role: document.getElementById("team-position").value,
+        phone: document.getElementById("team-phone").value
+      };
       Telegram.WebApp.sendData(JSON.stringify(data));
-      showSuccess("Заявка отправлена!");
+      showSuccess("✅ Заявка отправлена! В течение недели администратор свяжется с вами.");
     }
 
     document.addEventListener('DOMContentLoaded', ()=>showSection('main-menu'));
