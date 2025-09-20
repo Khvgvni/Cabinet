@@ -12,7 +12,7 @@ from telegram.ext import (
 )
 
 # 🔑 Настройки
-TOKEN = os.getenv("BOT_TOKEN") or "ТВОЙ_ТОКЕН"
+TOKEN = os.getenv("8259299108:AAENuDFq8sb2OysuUacFQETMdhJg1LM-jmw") or "8259299108:AAENuDFq8sb2OysuUacFQETMdhJg1LM-jmw"
 GROUP_CHAT_ID = int(os.getenv("GROUP_CHAT_ID", "-1003014842866"))
 PRIVACY_URL = "https://docs.google.com/document/d/19eJqUD_zbSmc7_ug07XXYr25cV4BATTqBQwgsgdGX0U/edit?usp=sharing"
 
