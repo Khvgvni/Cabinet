@@ -105,8 +105,6 @@
       <!-- Бронирование -->
       <div id="booking" class="hidden">
         <div class="section-title">Бронирование стола</div>
-        <div class="form-group"><label class="form-label">Дата и время</label><input type="datetime-local" class="form-input" id="booking-date"></div>
-        <div class="form-group"><label class="form-label">Количество гостей</label><input type="number" class="form-input" id="guests" min="1" max="20" value="2"></div>
         <div class="form-group"><label class="form-label">Ваше имя</label><input type="text" class="form-input" id="booking-name" placeholder="Введите ваше имя"></div>
         <div class="form-group"><label class="form-label">Телефон</label><input type="tel" class="form-input" id="booking-phone" placeholder="+7 (999) 999-99-99"></div>
         <button class="btn" onclick="bookTable()">Забронировать</button>
@@ -175,8 +173,6 @@
     function bookTable() {
       const data = {
         type: "booking",
-        date: document.getElementById("booking-date").value,
-        guests: document.getElementById("guests").value,
         name: document.getElementById("booking-name").value,
         phone: document.getElementById("booking-phone").value
       };
